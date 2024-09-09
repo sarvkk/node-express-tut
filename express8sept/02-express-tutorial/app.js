@@ -1,29 +1,17 @@
-const http = require('http')
-const {readFileSync} = require('fs');
+const express = require('express')
+const path= require('path');
+const app = express()
 
-//get all files
-const HomePage=readFileSync("./index.html")
+//setup static and middleware
+app.use(express.static('./public'))
 
-const server= http.createServer((req,res)=>{
-    const url=req.url;
-    //home-page
-    if(url === '/'){
-        res.writeHead(200,{'content-type':"text/html"})
-        res.write("<h1>Home Page</h1>")
-        res.end()
-    }
-    //about-page
-    else if(url === '/about'){
-        res.writeHead(200,{'content-type':"text/html"})
-        res.write("<h1>About</h1>")
-        res.end()
-    }
-    //404
-    else{
-        res.writeHead(404,{'content-type':"text/html"})
-        res.write('<h1>Page Not Found</h1>');
-        res.end()
-    }
-    
+app.get('/',(req,res)=>{
+res.sendFile(path.resolve(__dirname,'./navbar-app/index.html'))
 })
-server.listen(5000)
+app.all('*',(req,res)=>{
+    res.status(404).send("resource not found")
+})
+app.listen(8000,()=>{
+    console.log("server is listening on port 800")
+})
+
