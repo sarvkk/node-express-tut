@@ -1,20 +1,19 @@
-const express = require('express')
-const path= require('path');
+const express =require('express')
 const app = express()
 
-//setup static and middleware
-app.use(express.static('./public'))
-
-// app.get('/',(req,res)=>{
-// res.sendFile(path.resolve(__dirname,'./navbar-app/index.html'))
-// adding to static assets
-// SSR
-// })
-
-app.all('*',(req,res)=>{
-    res.status(404).send("resource not found")
+app.get('/',(req,res)=>{
+    const method= req.method;
+    const url= req.url;
+    const time = new Date().getFullYear();
+    console.log(method,url,time);
+    res.send("Home Page")
 })
+app.get('/about',(req,res)=>{
+    res.send("About Page")
+})
+
+
+
 app.listen(8000,()=>{
-    console.log("server is listening on port 8000")
+    console.log("listening at port 8000.")
 })
-
