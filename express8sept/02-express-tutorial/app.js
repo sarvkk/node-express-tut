@@ -1,19 +1,18 @@
-const express =require('express')
+const express = require('express')
 const app = express()
+const people=require('./routes/people')
+const auth= require('./routes/auth')
 
-app.get('/',(req,res)=>{
-    const method= req.method;
-    const url= req.url;
-    const time = new Date().getFullYear();
-    console.log(method,url,time);
-    res.send("Home Page")
-})
-app.get('/about',(req,res)=>{
-    res.send("About Page")
-})
+app.use(express.static('./methods-public'))
 
+app.use(express.urlencoded({extend:false}))
 
+app.use(express.json())
 
-app.listen(8000,()=>{
-    console.log("listening at port 8000.")
+app.use('/api/people',people)
+
+app.use('/login',auth)
+
+app.listen('8000',(req,res)=>{
+    console.log('listening on port 8000')
 })
